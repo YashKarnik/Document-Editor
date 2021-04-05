@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="css/index.css" />
+		<link rel="stylesheet" href="public/css/index.css" />
+		<link rel="icon" href="data:," />
+
+		<title>Notepad | Hello, World</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+		/>
+		<script
+			src="https://cdn.socket.io/4.0.0/socket.io.min.js"
+			integrity="sha384-DkkWv9oJFWLIydBXXjkBWnG1/fuVhw8YPBq37uvvD6WSYRFRqr21eY5Dg9ZhmWdy"
+			crossorigin="anonymous"
+		></script>
+	</head>
+	<body>
+		<header class="header">
+			<div class="menu">
+				<div class="hamburger base">
+					<hr />
+					<hr />
+					<hr />
+				</div>
+
+				<button class="menu-btns new base entrance-right">
+					<a href="/">+</a>
+				</button>
+
+				<button class="menu-btns rename base entrance-right">&#9998;</button>
+			</div>
+			<h1 id="title">Hello, World</h1>
+			<p class="spinner"></p>
+			<img src="./assets/floppy-disk.svg" class="saved" />
+		</header>
+		<textarea style="resize: none" name="main-note" id="notepad"></textarea>
+		<footer>Yash Karnik &#169;</footer>
+		<script src="./js/frontend.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="./js/main.js" defer></script>
+	</body>
+</html>

@@ -1,0 +1,99 @@
+@import 'scrollbar.css';
+@import 'spinner.css';
+@import 'transitions.css';
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+	text-decoration: none;
+	all: none;
+	margin: 0;
+	color: inherit;
+}
+
+body {
+	overflow: hidden;
+	height: 100vh;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: #000;
+}
+
+#notepad {
+	color: #fff;
+	background-color: #000;
+	height: 80vh;
+	width: 80vw;
+	padding: 0.5rem;
+	font-size: 1.2rem;
+	outline: none;
+}
+
+.header {
+	color: #fff;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0 1rem;
+}
+.header h1 {
+	min-width: max-content;
+}
+
+.menu {
+	position: absolute;
+	right: 0;
+	top: 1rem;
+	gap: 1.3rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.base {
+	border-radius: 50%;
+	height: 3.5rem;
+	width: 3.5rem;
+	margin: auto 2rem;
+	background-color: purple;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	font-size: 2rem;
+	color: #fff;
+	transition-duration: 100ms;
+}
+
+.menu-btns:hover {
+	background-color: rgb(94, 0, 94);
+}
+
+footer {
+	position: absolute;
+	color: rgb(155, 155, 155);
+	bottom: 10px;
+}
+
+.hamburger {
+	background-color: transparent;
+	border-radius: 25%;
+	padding: 5px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+@media only screen and (max-width: 915px) {
+	.base {
+		height: 2.5rem;
+		width: 2.5rem;
+		margin: auto 0.7rem;
+		font-size: 1.3rem;
+	}
+}

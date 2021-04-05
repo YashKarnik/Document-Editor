@@ -1,0 +1,24 @@
+.entrance-right {
+	animation: rightEntrance 100ms linear forwards;
+}
+
+@keyframes rightEntrance {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+.exit-right {
+	animation: rightExit 100ms linear forwards;
+}
+
+@keyframes rightExit {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(200%);
+	}
+}
