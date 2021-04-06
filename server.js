@@ -1,10 +1,11 @@
-const PORT = process.env.PORT || 5000;
 require('dotenv').config();
+const PORT = process.env.PORT || 5000;
+const DB_URI = process.env.MONGODB_URI_LOCAL;
 
 const express = require('express');
 const mongoose = require('mongoose');
 const Doc = require('./model/document');
-mongoose.connect(String(process.env.MONGODB_URI_LOCAL), {
+mongoose.connect(DB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true,
@@ -49,9 +50,9 @@ app.get('/:id', (req, res) => {
 			Doc.findByIdAndUpdate(id, { title: data })
 				.then(value => {
 					io.emit('rename-doc', value.title);
-					cb({ RenameStatus: 200 });
+					cb({ status: 200 });
 				})
-				.catch(e => cb({ RenameStatus: 404 }));
+				.catch(e => cb({ status: 404 }));
 		});
 	});
 	res.sendFile(__dirname + '/index.html');

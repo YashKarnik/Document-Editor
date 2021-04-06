@@ -40,5 +40,7 @@ document.querySelector('.rename').addEventListener('click', () => {
 	docName =
 		prompt('Enter name for the document', heading.innerText) ||
 		heading.innerText;
-	socket.emit('rename-doc', docName, res => console.log(res));
+	socket.emit('rename-doc', docName, res => {
+		if (res.status == 404) alert('Error in renaming..Please retry');
+	});
 });
