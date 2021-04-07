@@ -18,6 +18,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 server.listen(PORT, () => console.log(`Connected server ${PORT}`));
@@ -28,20 +29,25 @@ app.get('/', (req, res) => {
 		.then(e => res.redirect(`/${newDoc._id}`))
 		.catch(e => res.send(`<h1>:( Error...404\n${e}</h1>`));
 });
+
+app.get('/thankyou', (req, res) => {
+	res.sendFile(__dirname + '/thankyou.html');
+});
+
 app.get('/:id', (req, res) => {
 	const id = req.params.id;
 	io.on('connection', socket => {
-		io.emit('meta', io.engine.clientsCount);
 		Doc.findById(id)
 			.then(data => {
-				io.emit('update-text', data.value || '');
+				io.emit('update-text', { value: data.value });
 				io.emit('rename-doc', data.title);
+				io.emit('meta', { conn: io.engine.clientsCount, id });
 			})
 			.catch(e => console.log(e));
 		socket.on('update-text', (data, cb) => {
 			Doc.findByIdAndUpdate(id, { value: data })
-				.then(value => {
-					socket.broadcast.emit('update-text', data);
+				.then(res => {
+					socket.broadcast.emit('update-text', { value: data });
 					cb({ status: 200 });
 				})
 				.catch(e => cb({ status: 404 }));
@@ -56,8 +62,15 @@ app.get('/:id', (req, res) => {
 				.catch(e => cb({ status: 404 }));
 		});
 		socket.on('disconnect', socket => {
-			io.emit('meta', io.engine.clientsCount);
+			io.emit('meta', { conn: io.engine.clientsCount, id });
 		});
 	});
 	res.sendFile(__dirname + '/index.html');
+});
+
+app.post('/delete/:id', (req, res) => {
+	const id = req.params.id;
+	Doc.findByIdAndDelete(id)
+		.then(success => res.send(success))
+		.catch(e => res.send(e));
 });
