@@ -8,6 +8,10 @@ socket.on('rename-doc', value => {
 	heading.innerText = value;
 	titleTag.innerText = 'Notepad | ' + value;
 });
+socket.on('meta', conn => {
+	document.querySelector('.online').innerText = conn;
+	console.log(conn);
+});
 
 const notepad = document.querySelector('#notepad');
 const spinner = document.querySelector('.spinner');

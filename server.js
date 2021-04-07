@@ -26,14 +26,15 @@ app.get('/', (req, res) => {
 	newDoc
 		.save()
 		.then(e => res.redirect(`/${newDoc._id}`))
-		.catch(e => res.send('<h1>:( Error...404</h1>'));
+		.catch(e => res.send(`<h1>:( Error...404\n${e}</h1>`));
 });
 app.get('/:id', (req, res) => {
 	const id = req.params.id;
 	io.on('connection', socket => {
+		io.emit('meta', io.engine.clientsCount);
 		Doc.findById(id)
 			.then(data => {
-				io.emit('update-text', data.value);
+				io.emit('update-text', data.value || '');
 				io.emit('rename-doc', data.title);
 			})
 			.catch(e => console.log(e));
@@ -53,6 +54,9 @@ app.get('/:id', (req, res) => {
 					cb({ status: 200 });
 				})
 				.catch(e => cb({ status: 404 }));
+		});
+		socket.on('disconnect', socket => {
+			io.emit('meta', io.engine.clientsCount);
 		});
 	});
 	res.sendFile(__dirname + '/index.html');

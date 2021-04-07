@@ -80,6 +80,13 @@ footer {
 	bottom: 10px;
 }
 
+.online {
+	background-color: forestgreen;
+}
+
+.online:hover {
+	background-color: forestgreen;
+}
 .hamburger {
 	background-color: transparent;
 	border-radius: 25%;
