@@ -13,7 +13,7 @@
 		<!-- <link rel="shortcut icon" href="/floppy-disk.svg" type="image/x-icon" /> -->
 		<!-- <link rel="stylesheet" href="public/css/index.css" /> -->
 
-		<title>Notepad | Hello, World</title>
+		<title>Notepad | Loading...</title>
 
 		<script
 			src="https://cdn.socket.io/4.0.0/socket.io.min.js"
@@ -22,12 +22,15 @@
 		></script>
 	</head>
 	<body>
+		<div class="main-spinner">
+			<div></div>
+		</div>
 		<header class="header">
 			<div class="menu">
-				<div class="hamburger base">
-					<hr />
-					<hr />
-					<hr />
+				<div class="base hamburger">
+					<span></span>
+					<span></span>
+					<span></span>
 				</div>
 
 				<button class="menu-btns new base entrance-right">
@@ -39,18 +42,20 @@
 					<img
 						style="height: 1.6rem; width: 1.6rem"
 						src="assets/garbage-can.svg"
-						alt="ee"
+						alt="&times;"
 						srcset=""
 					/>
 				</button>
 				<button class="menu-btns base online entrance-right">0</button>
 			</div>
 			<h1 id="title">Hello, World</h1>
+
 			<p class="spinner"></p>
 			<img src="./assets/floppy-disk.svg" class="saved" />
 		</header>
 		<textarea style="resize: none" name="main-note" id="notepad"></textarea>
 		<footer>Yash Karnik &#169;</footer>
+		<script src="./public/js/frontend.js"></script>
 		<script src="./js/frontend.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="./js/main.js" defer></script>

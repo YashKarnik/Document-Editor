@@ -1,21 +1,22 @@
 var socket = io();
 const heading = document.querySelector('#title');
 const titleTag = document.querySelector('title');
-const deleteBTN = document.querySelector('.delete');
-deleteBTN.style.display = 'none';
+const MainLoading = document.querySelector('.main-spinner');
 let currDocID;
 socket.on('update-text', ({ value }) => {
 	notepad.value = value;
 });
+socket.on('meta', ({ conn, id, title }) => {
+	document.querySelector('.online').innerText = conn;
+	currDocID = id;
+	heading.innerText = title ? title : heading.innerText;
+	titleTag.innerText = title ? 'Notepad | ' + title : titleTag.innerText;
+	// console.log(currDocID);
+	if (currDocID) MainLoading.style.display = 'none';
+});
 socket.on('rename-doc', value => {
 	heading.innerText = value;
 	titleTag.innerText = 'Notepad | ' + value;
-});
-socket.on('meta', ({ conn, id }) => {
-	document.querySelector('.online').innerText = conn;
-	currDocID = id;
-	console.log(currDocID);
-	if (currDocID) deleteBTN.style.display = 'block';
 });
 
 const notepad = document.querySelector('#notepad');
@@ -49,6 +50,7 @@ document.querySelector('.rename').addEventListener('click', () => {
 	docName =
 		prompt('Enter name for the document', heading.innerText) ||
 		heading.innerText;
+
 	socket.emit('rename-doc', docName, res => {
 		if (res.status == 404) alert('Error in renaming..Please retry');
 	});

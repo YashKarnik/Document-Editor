@@ -23,11 +23,18 @@ app.use(express.urlencoded({ extended: true }));
 
 server.listen(PORT, () => console.log(`Connected server ${PORT}`));
 app.get('/', (req, res) => {
-	const newDoc = new Doc({ value: '', title: 'New Document' });
+	const newDoc = new Doc({ value: '', title: '' });
+	const id = newDoc._id;
 	newDoc
 		.save()
-		.then(e => res.redirect(`/${newDoc._id}`))
-		.catch(e => res.send(`<h1>:( Error...404\n${e}</h1>`));
+		.then(() => {
+			Doc.findByIdAndUpdate(id, { value: '', title: id })
+				.then(() => {
+					res.redirect(`/${id}`);
+				})
+				.catch(e => res.send(`<h1>:( Error...404\n${e}</h1>`));
+		})
+		.catch(e => res.send(`<h1>:( Error...4ww04\n${e}</h1>`));
 });
 
 app.get('/thankyou', (req, res) => {
@@ -40,8 +47,12 @@ app.get('/:id', (req, res) => {
 		Doc.findById(id)
 			.then(data => {
 				io.emit('update-text', { value: data.value });
-				io.emit('rename-doc', data.title);
-				io.emit('meta', { conn: io.engine.clientsCount, id });
+				// io.emit('rename-doc', data.title);
+				io.emit('meta', {
+					conn: io.engine.clientsCount,
+					id,
+					title: data.title,
+				});
 			})
 			.catch(e => console.log(e));
 		socket.on('update-text', (data, cb) => {
@@ -56,7 +67,7 @@ app.get('/:id', (req, res) => {
 		socket.on('rename-doc', (data, cb) => {
 			Doc.findByIdAndUpdate(id, { title: data })
 				.then(value => {
-					io.emit('rename-doc', value.title);
+					io.emit('rename-doc', data);
 					cb({ status: 200 });
 				})
 				.catch(e => cb({ status: 404 }));
