@@ -1,6 +1,7 @@
 @import 'scrollbar.css';
 @import 'spinner.css';
 @import 'transitions.css';
+@import 'hamburger.css';
 * {
 	padding: 0;
 	margin: 0;
@@ -61,13 +62,16 @@ body {
 	height: 3.5rem;
 	width: 3.5rem;
 	margin: auto 2rem;
-	background-color: purple;
+	/* background-color: purple; */
 	border: none;
 	outline: none;
 	cursor: pointer;
 	font-size: 2rem;
 	color: #fff;
 	transition-duration: 100ms;
+}
+.menu-btns {
+	background-color: purple;
 }
 
 .menu-btns:hover {
@@ -87,16 +91,9 @@ footer {
 .online:hover {
 	background-color: forestgreen;
 }
-.hamburger {
-	background-color: transparent;
-	border-radius: 25%;
-	padding: 5px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-}
 
 @media only screen and (max-width: 915px) {
+	.hamburder,
 	.base {
 		height: 2.5rem;
 		width: 2.5rem;

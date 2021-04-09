@@ -1,0 +1,22 @@
+.hamburger {
+	padding: 0.3rem;
+	background-color: transparent;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	height: 3.5rem;
+	width: 3.5rem;
+	margin: auto 2rem;
+	cursor: pointer;
+	color: #fff;
+	position: relative;
+	transition-duration: 300ms;
+}
+
+.hamburger span {
+	display: block;
+	height: 2px;
+	width: 100%;
+	background: #fff;
+	transition: 0.5s ease-in-out;
+}
