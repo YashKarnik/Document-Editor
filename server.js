@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 				})
 				.catch(e => res.send(`<h1>:( Error...404\n${e}</h1>`));
 		})
-		.catch(e => res.send(`<h1>:( Error...4ww04\n${e}</h1>`));
+		.catch(e => res.send(`<h1>:( Error...404\n${e}</h1>`));
 });
 
 app.get('/thankyou', (req, res) => {
@@ -43,18 +43,25 @@ app.get('/thankyou', (req, res) => {
 
 app.get('/:id', (req, res) => {
 	const id = req.params.id;
+
 	io.on('connection', socket => {
 		Doc.findById(id)
 			.then(data => {
+				console.log('Found', data);
 				io.emit('update-text', { value: data.value });
-				// io.emit('rename-doc', data.title);
 				io.emit('meta', {
 					conn: io.engine.clientsCount,
 					id,
 					title: data.title,
+					value: data.value,
+					docExists: true,
 				});
 			})
-			.catch(e => console.log(e));
+			.catch(e => {
+				console.log('rty', e);
+				io.emit('meta', { docExists: false });
+			});
+
 		socket.on('update-text', (data, cb) => {
 			Doc.findByIdAndUpdate(id, { value: data })
 				.then(res => {

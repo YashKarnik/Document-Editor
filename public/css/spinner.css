@@ -57,3 +57,22 @@
 		transform: rotate(0deg) scale(1);
 	}
 }
+
+.main-Error {
+	height: 100%;
+	width: 100%;
+	background-color: inherit;
+	z-index: 100;
+	position: absolute;
+	display: grid;
+	place-items: center;
+	font-size: 5rem;
+	text-align: center;
+	display: none;
+}
+.main-Error div {
+	display: block;
+	width: 6rem;
+	height: 6rem;
+	background-color: red;
+}
