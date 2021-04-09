@@ -6,13 +6,23 @@ let currDocID;
 socket.on('update-text', ({ value }) => {
 	notepad.value = value;
 });
-socket.on('meta', ({ conn, id, title }) => {
-	document.querySelector('.online').innerText = conn;
-	currDocID = id;
-	heading.innerText = title ? title : heading.innerText;
-	titleTag.innerText = title ? 'Notepad | ' + title : titleTag.innerText;
-	// console.log(currDocID);
-	if (currDocID) MainLoading.style.display = 'none';
+socket.on('meta', ({ conn, id, title, value, docExists }) => {
+	if (docExists) {
+		document.querySelector('.online').innerText = conn;
+		currDocID = id;
+		if (title) {
+			heading.innerText = title;
+			titleTag.innerText = title;
+		}
+		if (value) notepad.value = value;
+		if (currDocID) {
+			MainLoading.style.display = 'none';
+			document.querySelector('.main-Error').style.display = 'none';
+		}
+	} else {
+		MainLoading.style.display = 'none';
+		document.querySelector('.main-Error').style.display = 'grid';
+	}
 });
 socket.on('rename-doc', value => {
 	heading.innerText = value;
