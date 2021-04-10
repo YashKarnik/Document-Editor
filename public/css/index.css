@@ -45,8 +45,13 @@ body {
 	align-items: center;
 	gap: 0 1rem;
 }
-.header h1 {
-	min-width: max-content;
+#title {
+	/* min-width: max-content; */
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	width: min-content;
+	/* margin: 1rem auto; */
 }
 
 .menu {
@@ -94,11 +99,15 @@ footer {
 }
 
 @media only screen and (max-width: 915px) {
+	#title {
+		width: 24rem;
+	}
+
 	.hamburder,
 	.base {
 		height: 2.5rem;
 		width: 2.5rem;
-		margin: auto 0.7rem;
+		margin: auto 0.5rem auto auto;
 		font-size: 1.3rem;
 	}
 }
