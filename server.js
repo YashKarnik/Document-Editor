@@ -80,7 +80,7 @@ app.get('/:id', (req, res) => {
 				.catch(e => cb({ status: 404 }));
 		});
 		socket.on('disconnect', socket => {
-			io.emit('meta', { conn: io.engine.clientsCount, id });
+			io.emit('meta', { conn: io.engine.clientsCount, docExists: true });
 		});
 	});
 	res.sendFile(__dirname + '/index.html');
