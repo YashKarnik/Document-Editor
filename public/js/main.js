@@ -17,11 +17,11 @@ socket.on('meta', ({ conn, id, title, value, docExists }) => {
 		if (value) notepad.value = value;
 		if (currDocID) {
 			MainLoading.style.display = 'none';
-			document.querySelector('.main-Error').style.display = 'none';
+			// document.querySelector('.main-Error').style.display = 'none';
 		}
 	} else {
 		MainLoading.style.display = 'none';
-		document.querySelector('.main-Error').style.display = 'grid';
+		// document.querySelector('.main-Error').style.display = 'grid';
 	}
 });
 socket.on('rename-doc', value => {

@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 server.listen(PORT, () => console.log(`Connected server ${PORT}`));
 
 app.get('/', (req, res) => {
-	res.render(__dirname + '/html/index', { a: 'sssss' });
+	res.render(__dirname + '/html/index');
 });
 
 app.get('/add', (req, res) => {
@@ -36,7 +36,7 @@ app.get('/add', (req, res) => {
 		.then(() => {
 			Doc.findByIdAndUpdate(id, { value: '', title: id })
 				.then(() => {
-					res.redirect(`/${id}`);
+					res.redirect(`/document/${id}`);
 				})
 				.catch(e => res.send(`<h1>:( Error...404\n${e}</h1>`));
 		})
@@ -47,9 +47,9 @@ app.get('/thankyou', (req, res) => {
 	res.render(__dirname + '/html/thankyou');
 });
 
-app.get('/:id', (req, res) => {
+app.get('/document/:id', (req, res) => {
 	const id = req.params.id;
-
+	console.log('aaa');
 	io.on('connection', socket => {
 		Doc.findById(id)
 			.then(data => {
