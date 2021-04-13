@@ -18,11 +18,17 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
 app.use(express.static(__dirname + '/public'));
+app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 server.listen(PORT, () => console.log(`Connected server ${PORT}`));
+
 app.get('/', (req, res) => {
+	res.render(__dirname + '/html/index', { a: 'sssss' });
+});
+
+app.get('/add', (req, res) => {
 	const newDoc = new Doc({ value: '', title: '' });
 	const id = newDoc._id;
 	newDoc
@@ -38,7 +44,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/thankyou', (req, res) => {
-	res.sendFile(__dirname + '/thankyou.html');
+	res.render(__dirname + '/html/thankyou');
 });
 
 app.get('/:id', (req, res) => {
@@ -83,7 +89,7 @@ app.get('/:id', (req, res) => {
 			io.emit('meta', { conn: io.engine.clientsCount, docExists: true });
 		});
 	});
-	res.sendFile(__dirname + '/index.html');
+	res.render(__dirname + '/html/document');
 });
 
 app.post('/delete/:id', (req, res) => {
