@@ -1,40 +1,23 @@
 require('dotenv').config();
 const PORT = process.env.PORT || 5000;
-const DB_URI = process.env.MONGODB_URI_LOCAL;
-
-const express = require('express');
-const mongoose = require('mongoose');
-const Doc = require('./model/document');
-mongoose.connect(DB_URI, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useCreateIndex: true,
-	useFindAndModify: false,
-});
-mongoose.connection.once('open', () => console.log('Database connected'));
-
-const app = express();
+const BASE_DIR = __dirname + '/html';
+require('./database')();
+const app = require('./express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-
-app.use(express.static(__dirname + '/public'));
-app.set('view engine', 'ejs');
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-server.listen(PORT, () => console.log(`Connected server ${PORT}`));
+const Doc = require('./database/model/document');
 
 app.get('/', (req, res) => {
-	res.render(__dirname + '/html/index');
+	res.render(BASE_DIR + '/index');
 });
 
 app.get('/add', (req, res) => {
-	const newDoc = new Doc({ value: '', title: '' });
+	const newDoc = new Doc({ value: '', title: '', urlID: '' });
 	const id = newDoc._id;
 	newDoc
 		.save()
 		.then(() => {
-			Doc.findByIdAndUpdate(id, { value: '', title: id })
+			Doc.findByIdAndUpdate(id, { title: id, urlID: id })
 				.then(() => {
 					res.redirect(`/document/${id}`);
 				})
@@ -44,53 +27,64 @@ app.get('/add', (req, res) => {
 });
 
 app.get('/thankyou', (req, res) => {
-	res.render(__dirname + '/html/thankyou');
+	res.render(BASE_DIR + '/thankyou');
 });
 
-app.get('/document/:id', (req, res) => {
-	const id = req.params.id;
-	console.log('aaa');
-	io.on('connection', socket => {
-		Doc.findById(id)
-			.then(data => {
-				console.log('Found', data);
-				io.emit('update-text', { value: data.value });
-				io.emit('meta', {
-					conn: io.engine.clientsCount,
-					id,
-					title: data.title,
-					value: data.value,
-					docExists: true,
-				});
-			})
-			.catch(e => {
-				console.log('rty', e);
-				io.emit('meta', { docExists: false });
-			});
+// app.get('/document/:id', (req, res) => {
+// 	const id = req.params.id;
+// 	let DATA;
+// 	Doc.findById(id)
+// 		.then(res => {
+// 			DATA = res;
+// 			console.log('Found');
+// 		})
+// 		.catch(e => {
+// 			console.log('rty', e);
+// 		});
+// 	io.on('connection', socket => {
+// 		// Doc.findById(id)
+// 		// 	.then(data => {
+// 		// 		console.log('Found', data);
+// 		// 		io.emit('update-text', { value: data.value });
+// 		// 		io.emit('meta', {
+// 		// 			conn: io.engine.clientsCount,
+// 		// 			id,
+// 		// 			title: data.title,
+// 		// 			value: data.value,
+// 		// 			docExists: true,
+// 		// 		});
+// 		// 	})
+// 		// 	.catch(e => {
+// 		// 		console.log('rty', e);
+// 		// 		io.emit('meta', { docExists: false });
+// 		// 	});
+// 		io.emit('meta', { conn: io.engine.clientsCount, DATA, event: 'init' });
+// 		socket.on('update-text', (data, cb) => {
+// 			Doc.findByIdAndUpdate(id, { value: data })
+// 				.then(res => {
+// 					socket.broadcast.emit('update-text', { value: data });
+// 					cb({ status: 200 });
+// 				})
+// 				.catch(e => cb({ status: 404 }));
+// 		});
 
-		socket.on('update-text', (data, cb) => {
-			Doc.findByIdAndUpdate(id, { value: data })
-				.then(res => {
-					socket.broadcast.emit('update-text', { value: data });
-					cb({ status: 200 });
-				})
-				.catch(e => cb({ status: 404 }));
-		});
+// 		socket.on('rename-doc', (data, cb) => {
+// 			Doc.findByIdAndUpdate(id, { title: data })
+// 				.then(value => {
+// 					io.emit('rename-doc', data);
+// 					cb({ status: 200 });
+// 				})
+// 				.catch(e => cb({ status: 404 }));
+// 		});
+// 		socket.on('disconnect', socket => {
+// 			io.emit('meta', { conn: io.engine.clientsCount, docExists: true });
+// 		});
+// 	});
+// 	res.render(BASE_DIR + '/document');
+// });
 
-		socket.on('rename-doc', (data, cb) => {
-			Doc.findByIdAndUpdate(id, { title: data })
-				.then(value => {
-					io.emit('rename-doc', data);
-					cb({ status: 200 });
-				})
-				.catch(e => cb({ status: 404 }));
-		});
-		socket.on('disconnect', socket => {
-			io.emit('meta', { conn: io.engine.clientsCount, docExists: true });
-		});
-	});
-	res.render(__dirname + '/html/document');
-});
+app.use('/document', require('./routes/document'));
+app.use('/test', require('./routes/document.test'));
 
 app.post('/delete/:id', (req, res) => {
 	const id = req.params.id;
@@ -98,3 +92,5 @@ app.post('/delete/:id', (req, res) => {
 		.then(success => res.send(success))
 		.catch(e => res.send(e));
 });
+
+server.listen(PORT, () => console.log(`Connected server ${PORT}`));

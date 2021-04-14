@@ -6,28 +6,19 @@ let currDocID;
 socket.on('update-text', ({ value }) => {
 	notepad.value = value;
 });
-socket.on('meta', ({ conn, id, title, value, docExists }) => {
-	if (docExists) {
+socket.on('meta', ({ conn, DATA, event }) => {
+	console.log(DATA);
+	if (DATA) {
 		document.querySelector('.online').innerText = conn;
-		currDocID = id;
-		if (title) {
-			heading.innerText = title;
-			titleTag.innerText = title;
-		}
-		if (value) notepad.value = value;
-		if (currDocID) {
-			MainLoading.style.display = 'none';
-			// document.querySelector('.main-Error').style.display = 'none';
-		}
-	} else {
+		notepad.value = DATA.value || '';
+		heading.innerText = titleTag.innerText = DATA.title;
 		MainLoading.style.display = 'none';
-		// document.querySelector('.main-Error').style.display = 'grid';
 	}
 });
-socket.on('rename-doc', value => {
-	heading.innerText = value;
-	titleTag.innerText = 'Notepad | ' + value;
-});
+// socket.on('rename-doc', value => {
+// 	heading.innerText = value;
+// 	titleTag.innerText = 'Notepad | ' + value;
+// });
 
 const notepad = document.querySelector('#notepad');
 const spinner = document.querySelector('.spinner');
@@ -51,8 +42,10 @@ notepad.addEventListener('keydown', () => {
 function save(e) {
 	clearTimeout(TimeOutID);
 	socket.emit('update-text', notepad.value, res => {
-		if (res.status === 200) spinner.style.display = 'none';
-		saved.style.display = 'block';
+		if (res.status === 200) {
+			spinner.style.display = 'none';
+			saved.style.display = 'block';
+		}
 	});
 }
 
