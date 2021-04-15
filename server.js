@@ -5,6 +5,7 @@ require('./database')();
 const app = require('./express')();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+
 const Doc = require('./database/model/document');
 
 app.get('/', (req, res) => {
@@ -83,8 +84,7 @@ app.get('/thankyou', (req, res) => {
 // 	res.render(BASE_DIR + '/document');
 // });
 
-app.use('/document', require('./routes/document'));
-app.use('/test', require('./routes/document.test'));
+// app.use('/test', require('./routes/document.test'));
 
 app.post('/delete/:id', (req, res) => {
 	const id = req.params.id;
@@ -94,3 +94,5 @@ app.post('/delete/:id', (req, res) => {
 });
 
 server.listen(PORT, () => console.log(`Connected server ${PORT}`));
+module.exports = io;
+app.use('/document', require('./routes/document'));
