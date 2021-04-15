@@ -6,8 +6,7 @@ let currDocID;
 socket.on('update-text', ({ value }) => {
 	notepad.value = value;
 });
-socket.on('meta', ({ conn, DATA, event }) => {
-	console.log(DATA);
+socket.on('meta', ({ conn, DATA }) => {
 	if (DATA) {
 		document.querySelector('.online').innerText = conn;
 		notepad.value = DATA.value || '';
