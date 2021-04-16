@@ -9,7 +9,7 @@ const io = require('socket.io')(server);
 const Doc = require('./database/model/document');
 
 app.get('/', (req, res) => {
-	res.render(BASE_DIR + '/index');
+	res.redirect('/add');
 });
 
 app.get('/add', (req, res) => {
@@ -89,8 +89,11 @@ app.get('/thankyou', (req, res) => {
 app.post('/delete/:id', (req, res) => {
 	const id = req.params.id;
 	Doc.findByIdAndDelete(id)
-		.then(success => res.send(success))
-		.catch(e => res.send(e));
+		.then(success => {
+			console.log('success');
+			res.json(success);
+		})
+		.catch(e => res.json(e));
 });
 
 server.listen(PORT, () => console.log(`Connected server ${PORT}`));
