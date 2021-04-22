@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include ('include/header') %>
+	<body>
+		<div class="main-spinner">
+			<div></div>
+		</div>
+
+		<header class="header">
+			<div class="menu">
+				<div class="base hamburger">
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+
+				<button class="menu-btns new base entrance-right">
+					<a href="/">+</a>
+				</button>
+
+				<button class="menu-btns rename base entrance-right">&#9998;</button>
+				<button class="menu-btns delete base entrance-right">
+					<img
+						style="height: 1.6rem; width: 1.6rem"
+						src="../assets/garbage-can.svg"
+						alt="&times;"
+						srcset=""
+					/>
+				</button>
+				<button class="menu-btns base online entrance-right">0</button>
+			</div>
+			<h1 id="title">Loading...</h1>
+
+			<p class="spinner"></p>
+			<img src="../assets/floppy-disk.svg" class="saved" />
+		</header>
+		<textarea style="resize: none" name="main-note" id="notepad"></textarea>
+		<%- include ('include/footer') %>
+	</body>
+</html>
