@@ -68,7 +68,7 @@
 	place-items: center;
 	font-size: 5rem;
 	text-align: center;
-	display: none;
+	/* display: none; */
 }
 .main-Error div {
 	display: block;

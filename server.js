@@ -10,6 +10,7 @@ const Doc = require('./database/model/document');
 
 app.get('/', (req, res) => {
 	res.redirect('/add');
+	// res.render(BASE_DIR + '/index');
 });
 
 app.get('/add', (req, res) => {
@@ -31,66 +32,10 @@ app.get('/thankyou', (req, res) => {
 	res.render(BASE_DIR + '/thankyou');
 });
 
-// app.get('/document/:id', (req, res) => {
-// 	const id = req.params.id;
-// 	let DATA;
-// 	Doc.findById(id)
-// 		.then(res => {
-// 			DATA = res;
-// 			console.log('Found');
-// 		})
-// 		.catch(e => {
-// 			console.log('rty', e);
-// 		});
-// 	io.on('connection', socket => {
-// 		// Doc.findById(id)
-// 		// 	.then(data => {
-// 		// 		console.log('Found', data);
-// 		// 		io.emit('update-text', { value: data.value });
-// 		// 		io.emit('meta', {
-// 		// 			conn: io.engine.clientsCount,
-// 		// 			id,
-// 		// 			title: data.title,
-// 		// 			value: data.value,
-// 		// 			docExists: true,
-// 		// 		});
-// 		// 	})
-// 		// 	.catch(e => {
-// 		// 		console.log('rty', e);
-// 		// 		io.emit('meta', { docExists: false });
-// 		// 	});
-// 		io.emit('meta', { conn: io.engine.clientsCount, DATA, event: 'init' });
-// 		socket.on('update-text', (data, cb) => {
-// 			Doc.findByIdAndUpdate(id, { value: data })
-// 				.then(res => {
-// 					socket.broadcast.emit('update-text', { value: data });
-// 					cb({ status: 200 });
-// 				})
-// 				.catch(e => cb({ status: 404 }));
-// 		});
-
-// 		socket.on('rename-doc', (data, cb) => {
-// 			Doc.findByIdAndUpdate(id, { title: data })
-// 				.then(value => {
-// 					io.emit('rename-doc', data);
-// 					cb({ status: 200 });
-// 				})
-// 				.catch(e => cb({ status: 404 }));
-// 		});
-// 		socket.on('disconnect', socket => {
-// 			io.emit('meta', { conn: io.engine.clientsCount, docExists: true });
-// 		});
-// 	});
-// 	res.render(BASE_DIR + '/document');
-// });
-
-// app.use('/test', require('./routes/document.test'));
-
 app.post('/delete/:id', (req, res) => {
 	const id = req.params.id;
 	Doc.findByIdAndDelete(id)
 		.then(success => {
-			console.log('success');
 			res.json(success);
 		})
 		.catch(e => res.json(e));
